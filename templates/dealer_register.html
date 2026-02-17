@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="py-5 bg-light">
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="text-center mb-5">
+                    <h1 class="fw-bold">Join Our Dealer Network</h1>
+                    <p class="text-secondary">Expand your business with India's most trusted PVC manufacturing partner.
+                    </p>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <div class="row g-0">
+                        <div class="col-md-5 bg-primary text-white p-5 d-flex flex-column justify-content-center">
+                            <h3 class="fw-bold mb-4">Dealer Benefits</h3>
+                            <ul class="list-unstyled">
+                                <li class="mb-3 Small"><i class="fas fa-check-circle me-2"></i> Wholesale Pricing</li>
+                                <li class="mb-3 Small"><i class="fas fa-check-circle me-2"></i> Marketing Support</li>
+                                <li class="mb-3 Small"><i class="fas fa-check-circle me-2"></i> Exclusive Regions</li>
+                                <li class="mb-3 Small"><i class="fas fa-check-circle me-2"></i> Priority Dispatches</li>
+                                <li class="mb-3 Small"><i class="fas fa-check-circle me-2"></i> GST Compliant Billing
+                                </li>
+                            </ul>
+                            <div class="mt-4 pt-4 border-top border-white border-opacity-25">
+                                <p class="small mb-0">Need help with registration?</p>
+                                <a href="tel:+919876543210" class="text-white fw-bold text-decoration-none">+91 98765
+                                    43210</a>
+                            </div>
+                        </div>
+                        <div class="col-md-7 p-5 bg-white">
+                            <form action="{{ url_for('main.dealer_register') }}" method="POST">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                <h5 class="fw-bold mb-4">Account Details</h5>
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <label class="form-label small">Preferred Username</label>
+                                        <input type="text" name="username" class="form-control" placeholder="dealer_hub"
+                                            required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label small">Official Email</label>
+                                        <input type="email" name="email" class="form-control"
+                                            placeholder="contact@company.com" required>
+                                    </div>
+                                    <div class="col-12 border-bottom pb-4 mb-2">
+                                        <label class="form-label small">Password</label>
+                                        <input type="password" name="password" class="form-control" required>
+                                    </div>
+
+                                    <h5 class="fw-bold mb-2">Business Information</h5>
+                                    <div class="col-12">
+                                        <label class="form-label small">Company / Shop Name</label>
+                                        <input type="text" name="company_name" class="form-control" required>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label small">GST Number (Optional)</label>
+                                        <input type="text" name="gst_number" class="form-control">
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label small">Shop/Office Address</label>
+                                        <textarea name="address" class="form-control" rows="3" required></textarea>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">City</label>
+                                        <input type="text" name="city" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label small">State</label>
+                                        <input type="text" name="state" class="form-control" required>
+                                    </div>
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" class="btn btn-primary btn-lg w-100">Send Registration
+                                            Request</button>
+                                        <p class="text-center text-secondary small mt-3">By clicking register, you agree
+                                            to our dealer partnership terms.</p>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

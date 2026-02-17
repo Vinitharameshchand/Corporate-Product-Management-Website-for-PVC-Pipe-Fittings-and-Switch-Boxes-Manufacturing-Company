@@ -1,0 +1,131 @@
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #198754;
+    --dark-blue: #0a2351;
+    --light-bg: #f8f9fa;
+    --accent-color: #20c997;
+    --font-heading: 'Outfit', sans-serif;
+    --font-body: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: #ffffff;
+    color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--dark-blue);
+    font-weight: 700;
+}
+
+/* Navbar */
+.navbar {
+    padding: 1rem 0;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-family: var(--font-heading);
+    letter-spacing: 1px;
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, rgba(10, 35, 81, 0.9) 0%, rgba(13, 110, 253, 0.8) 100%), url('../images/factory-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 120px 0;
+}
+
+.hero-section h1 {
+    color: white;
+    font-size: 3.5rem;
+    line-height: 1.2;
+}
+
+/* Cards */
+.product-card {
+    border: none;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+    height: 100%;
+}
+
+.product-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+}
+
+.product-card img {
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Icons/Features */
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background-color: rgba(13, 110, 253, 0.1);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+/* Admin Dashboard */
+.sidebar {
+    height: 100vh;
+    background-color: var(--dark-blue);
+    color: white;
+    padding-top: 20px;
+}
+
+.sidebar a {
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    padding: 10px 20px;
+    display: block;
+}
+
+.sidebar a:hover, .sidebar a.active {
+    background-color: rgba(255,255,255,0.1);
+    color: white;
+}
+
+.stat-card {
+    border: none;
+    border-radius: 15px;
+    padding: 20px;
+    color: white;
+}
+
+/* Buttons */
+.btn-primary {
+    padding: 12px 25px;
+    font-weight: 600;
+    border-radius: 8px;
+}
+
+/* Transitions */
+.fade-in {
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .hero-section h1 {
+        font-size: 2.5rem;
+    }
+}

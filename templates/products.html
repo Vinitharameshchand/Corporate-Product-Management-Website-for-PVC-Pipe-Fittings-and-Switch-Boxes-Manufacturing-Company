@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<!-- Page Header -->
+<section class="bg-primary text-white py-4">
+    <div class="container text-center">
+        <h1 class="h3 fw-bold mb-0 text-white">Our Products</h1>
+    </div>
+</section>
+
+<!-- Filter Section -->
+<section class="py-4 border-bottom bg-light sticky-top" style="top: 70px; z-index: 1020;">
+    <div class="container">
+        <form action="{{ url_for('main.products') }}" method="GET" class="row g-3 align-items-center">
+            <div class="col-md-3">
+                <select name="category" class="form-select" onchange="this.form.submit()">
+                    <option value="">All Categories</option>
+                    {% for cat in categories %}
+                    <option value="{{ cat.id }}" {% if selected_category==cat.id %}selected{% endif %}>{{ cat.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-7">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i
+                            class="fas fa-search text-secondary"></i></span>
+                    <input type="text" name="search" class="form-control border-start-0"
+                        placeholder="Search by product name..." value="{{ request.args.get('search', '') }}">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Search</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- Product Grid -->
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            {% if products %}
+            {% for product in products %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card product-card shadow-sm h-100">
+                    <div class="position-relative">
+                        <img src="{{ url_for('static', filename='images/products/' + product.image_url) if product.image_url else 'https://via.placeholder.com/400x300' }}"
+                            class="card-img-top" alt="{{ product.name }}">
+                        {% if product.is_featured %}
+                        <span class="badge bg-success position-absolute top-0 end-0 m-3">Featured</span>
+                        {% endif %}
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="text-secondary small mb-1">{{ product.category.name }}</h6>
+                        <h5 class="card-title h6 fw-bold text-dark mb-2">{{ product.name }}</h5>
+                        <ul class="list-unstyled small text-secondary mb-3 flex-grow-1">
+                            <li class="mb-1"><i class="fas fa-cube me-2"></i> {{ product.material }}</li>
+                            <li><i class="fas fa-expand me-2"></i> {{ product.size_range }}</li>
+                        </ul>
+                        <div class="d-grid gap-2">
+                            <a href="{{ url_for('main.product_detail', product_id=product.id) }}"
+                                class="btn btn-primary btn-sm">View Details</a>
+                            <a href="{{ url_for('main.enquiry', product_id=product.id) }}"
+                                class="btn btn-outline-secondary btn-sm">Enquiry</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="col-12 text-center py-5">
+                <div class="mb-3 text-secondary" style="font-size: 3rem;"><i class="fas fa-box-open"></i></div>
+                <h3 class="fw-bold">No Products Found</h3>
+                <p class="text-secondary">Try adjusting your filters or search terms.</p>
+                <a href="{{ url_for('main.products') }}" class="btn btn-primary">Clear All Filters</a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

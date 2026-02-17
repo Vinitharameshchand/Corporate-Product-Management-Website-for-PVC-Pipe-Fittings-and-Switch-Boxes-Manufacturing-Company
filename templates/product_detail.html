@@ -1,0 +1,123 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ url_for('main.products') }}">Products</a></li>
+                <li class="breadcrumb-item active">{{ product.name }}</li>
+            </ol>
+        </nav>
+
+        <div class="row g-5">
+            <!-- Product Images -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                    <img src="{{ url_for('static', filename='images/products/' + product.image_url) if product.image_url else 'https://via.placeholder.com/600x450' }}"
+                        class="img-fluid" alt="{{ product.name }}">
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <div class="mb-2"><span class="badge bg-primary px-3">{{ product.category.name }}</span></div>
+                <h1 class="display-6 fw-bold mb-3">{{ product.name }}</h1>
+                <p class="text-secondary mb-4">{{ product.description }}</p>
+
+                <div class="bg-light p-4 rounded-4 mb-4">
+                    <h5 class="fw-bold mb-3 Small">Quick Specs</h5>
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <small class="text-secondary d-block">Material</small>
+                            <span class="fw-bold">{{ product.material }}</span>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-secondary d-block">Size Range</small>
+                            <span class="fw-bold">{{ product.size_range }}</span>
+                        </div>
+                        <div class="col-12">
+                            <small class="text-secondary d-block">Main Application</small>
+                            <span class="fw-bold">{{ product.application }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3 mb-5">
+                    <a href="{{ url_for('main.enquiry', product_id=product.id) }}"
+                        class="btn btn-primary btn-lg flex-grow-1">
+                        <i class="fas fa-paper-plane me-2"></i> Send Enquiry
+                    </a>
+                    {% if product.datasheet_url %}
+                    <a href="{{ url_for('static', filename='datasheets/' + product.datasheet_url) }}"
+                        class="btn btn-outline-dark btn-lg">
+                        <i class="fas fa-file-pdf me-2"></i> Specs Sheet
+                    </a>
+                    {% endif %}
+                </div>
+
+                <div class="alert alert-info border-0 rounded-4">
+                    <div class="d-flex">
+                        <div class="me-3"><i class="fas fa-shipping-fast fa-2x"></i></div>
+                        <div>
+                            <h6 class="fw-bold mb-1">Bulk Availability</h6>
+                            <p class="small mb-0 text-secondary">Available for bulk orders across India with specialized
+                                logistics support for dealers.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technical Details -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <div class="card border-0 shadow-sm rounded-4">
+                    <div class="card-body p-4 p-lg-5">
+                        <h3 class="fw-bold mb-4">Technical Specifications</h3>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th width="30%">Feature</th>
+                                        <th>Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if product.specifications %}
+                                    {% for key, value in product.specifications.items() %}
+                                    <tr>
+                                        <td class="fw-bold">{{ key }}</td>
+                                        <td>{{ value }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td class="fw-bold">Tensile Strength</td>
+                                        <td>Standard meeting ISO/ISI requirements</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Chemical Resistance</td>
+                                        <td>Excellent resistance to acids, bases, and salts</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Temperature Range</td>
+                                        <td>-10°C to 60°C</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">UV Resistance</td>
+                                        <td>Available with UV stabilizers for outdoor use</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

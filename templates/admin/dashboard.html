@@ -1,0 +1,205 @@
+{% extends "layout.html" %}
+
+{% block title %}Admin Dashboard - Vinitha PVC{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-container {
+        display: flex;
+        min-height: 100vh;
+    }
+
+    .admin-sidebar {
+        width: 280px;
+        background: #0a2351;
+        color: white;
+        flex-shrink: 0;
+    }
+
+    .admin-main {
+        flex-grow: 1;
+        padding: 40px;
+        background: #f0f2f5;
+    }
+
+    .nav-link.admin-link {
+        color: rgba(255, 255, 255, 0.7);
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 5px 15px;
+    }
+
+    .nav-link.admin-link:hover,
+    .nav-link.admin-link.active {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <!-- Sidebar -->
+    <div class="admin-sidebar shadow-lg">
+        <div class="p-4 border-bottom border-white border-opacity-10 mb-4">
+            <h5 class="fw-bold mb-0 text-white"><i class="fas fa-industry me-2"></i> Admin Panel</h5>
+        </div>
+        <nav class="nav flex-column mb-auto">
+            <a class="nav-link admin-link active" href="{{ url_for('admin.dashboard') }}"><i
+                    class="fas fa-tachometer-alt me-2"></i> Dashboard</a>
+            <a class="nav-link admin-link" href="{{ url_for('admin.manage_products') }}"><i class="fas fa-box me-2"></i>
+                Manage Products</a>
+            <a class="nav-link admin-link" href="{{ url_for('admin.manage_enquiries') }}"><i
+                    class="fas fa-envelope-open-text me-2"></i> Enquiries</a>
+            <a class="nav-link admin-link" href="#"><i class="fas fa-users me-2"></i> Dealers</a>
+            <a class="nav-link admin-link" href="#"><i class="fas fa-cog me-2"></i> Settings</a>
+        </nav>
+        <div class="mt-auto p-4">
+            <a href="{{ url_for('admin.logout') }}" class="btn btn-outline-light btn-sm w-100"><i
+                    class="fas fa-sign-out-alt me-2"></i> Logout</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="admin-main">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h2 class="fw-bold mb-1">Business Overview</h2>
+                <p class="text-secondary small">Welcome, {{ current_user.username }}! Here's what's happening today.</p>
+            </div>
+            <div>
+                <button class="btn btn-white shadow-sm border bg-white me-2">Download Report</button>
+                <button class="btn btn-primary shadow">Refresh Data</button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card bg-primary">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3 class="fw-bold mb-0">{{ total_products }}</h3>
+                            <small class="opacity-75">Total Products</small>
+                        </div>
+                        <div class="fs-1 opacity-25"><i class="fas fa-boxes"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-success">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3 class="fw-bold mb-0">{{ total_enquiries }}</h3>
+                            <small class="opacity-75">All Enquiries</small>
+                        </div>
+                        <div class="fs-1 opacity-25"><i class="fas fa-envelope"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-warning">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3 class="fw-bold mb-0">{{ new_enquiries }}</h3>
+                            <small class="opacity-75">New Leads</small>
+                        </div>
+                        <div class="fs-1 opacity-25"><i class="fas fa-bell"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card bg-dark">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h3 class="fw-bold mb-0">14</h3>
+                            <small class="opacity-75">Pending Dealers</small>
+                        </div>
+                        <div class="fs-1 opacity-25"><i class="fas fa-user-clock"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Enquiry Chart -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white p-4 border-0">
+                        <h5 class="fw-bold mb-0">Monthly Enquiry Chart</h5>
+                    </div>
+                    <div class="card-body p-4 text-center">
+                        <canvas id="enquiryChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Most Viewed Products -->
+            <div class="col-lg-4">
+                <div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="card-header bg-white p-4 border-0">
+                        <h5 class="fw-bold mb-0">Most Viewed Products</h5>
+                    </div>
+                    <div class="card-body p-4 pt-0">
+                        <ul class="list-group list-group-flush">
+                            {% for product in most_viewed %}
+                            <li class="list-group-item px-0 py-3 border-light">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-light rounded p-2 me-3" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-image text-secondary"></i>
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="fw-bold mb-0 small">{{ product.name }}</h6>
+                                        <small class="text-secondary">{{ product.category.name }}</small>
+                                    </div>
+                                    <div class="text-end">
+                                        <span class="badge bg-light text-dark">{{ product.views }} views</span>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            {% if not most_viewed %}
+                            <li class="list-group-item px-0 py-3 border-light text-center text-secondary">No views yet.
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('enquiryChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ enquiry_labels| tojson }},
+        datasets: [{
+            label: 'Enquiries per Month',
+            data: {{ enquiry_data| tojson }},
+        borderColor: '#0d6efd',
+        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+        tension: 0.4,
+        fill: true,
+        borderWidth: 3
+            }]
+        },
+        options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true, grid: { display: false } },
+            x: { grid: { display: false } }
+        }
+    }
+    });
+</script>
+{% endblock %}
